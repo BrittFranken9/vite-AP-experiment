@@ -16,6 +16,27 @@ canvas {
   cursor: crosshair;
 }
 
+#generateButton, #clearButton {
+  position: fixed;
+  bottom: 0;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#generateButton {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#clearButton {
+  right: 10px;
+}
+
+
 #colorSelect {
   position: fixed;
   top: 20px;
