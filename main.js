@@ -1,58 +1,39 @@
 import './style.css';
 
-// Get the canvas element and its context
+
+
 const canvas = document.getElementById('drawingCanvas');
 const context = canvas.getContext('2d');
+const colorSelect = document.getElementById('colorSelect');
+const gridSize = 20; // Set the size of the grid (pixels)
 
-// Set initial drawing properties
-let isDrawing = false;
-let lastX = 0;
-let lastY = 0;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-// Array met regenboogkleuren
-const rainbowColors = ['#ff0000', '#ffa500', '#ffff00', '#008000', '#0000ff', '#4b0082'];
+drawGrid(); // Draw the grid initially
 
-// Functie om muispositie om te zetten naar canvas eenheden
-function getCanvasCoordinates(event) {
-    const rect = canvas.getBoundingClientRect(); // Bounding rectangle van het canvas
-    const scaleX = canvas.width / rect.width; // Schaal van de canvas in verhouding tot het bounding rectangle
-    const scaleY = canvas.height / rect.height;
-    return {
-        x: (event.clientX - rect.left) * scaleX,
-        y: (event.clientY - rect.top) * scaleY
-    };
+canvas.addEventListener('click', drawPixel);
+
+function drawPixel(event) {
+    const x = Math.floor((event.clientX - canvas.offsetLeft) / gridSize) * gridSize;
+    const y = Math.floor((event.clientY - canvas.offsetTop) / gridSize) * gridSize;
+    const color = colorSelect.value;
+
+    context.fillStyle = color;
+    context.fillRect(x, y, gridSize, gridSize);
 }
 
-// Functie om op het canvas te tekenen
-function draw(position) {
-    if (!isDrawing) return; // Stop als er niet getekend wordt
-
-    context.strokeStyle = rainbowColors[Math.floor(Math.random() * rainbowColors.length)]; // Kies willekeurige regenboogkleur
-    context.lineWidth = 2;
-
-    // Teken een zeshoek met transparante binnenkant op position.x, position.y met zijden van 20 pixels
+function drawGrid() {
     context.beginPath();
-    context.moveTo(position.x + 20 * Math.cos(0), position.y + 20 * Math.sin(0));
-    for (let i = 1; i <= 6; i++) {
-        context.lineTo(position.x + 20 * Math.cos(i * 2 * Math.PI / 6), position.y + 20 * Math.sin(i * 2 * Math.PI / 6));
+    context.strokeStyle = 'lightgrey'; // Set grid color
+    context.lineWidth = 1; // Set grid line thickness
+    for (let x = 0; x < canvas.width; x += gridSize) {
+        context.moveTo(x, 0);
+        context.lineTo(x, canvas.height);
     }
-    context.closePath();
+    for (let y = 0; y < canvas.height; y += gridSize) {
+        context.moveTo(0, y);
+        context.lineTo(canvas.width, y);
+    }
     context.stroke();
 }
-
-// Event listeners voor muisacties
-canvas.addEventListener('mousedown', (event) => {
-    isDrawing = true;
-    const pos = getCanvasCoordinates(event); // Haal de canvas coördinaten van de muispositie
-    lastX = pos.x;
-    lastY = pos.y;
-    draw(pos); // Begin onmiddellijk met tekenen op de muispositie
-});
-
-canvas.addEventListener('mousemove', (event) => {
-    const pos = getCanvasCoordinates(event); // Haal de canvas coördinaten van de muispositie
-    draw(pos);
-});
-
-canvas.addEventListener('mouseup', () => (isDrawing = false));
-canvas.addEventListener('mouseout', () => (isDrawing = false));

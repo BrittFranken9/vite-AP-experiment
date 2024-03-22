@@ -1,26 +1,36 @@
 body, html {
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
   overflow: hidden;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #ece6cd;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #c3bfaa;
-  }
+  height: 100%;
+  background-color: #000000;
 }
 
 canvas {
-  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  border: 1px solid black;
+  cursor: crosshair;
 }
+
+#colorSelect {
+  position: fixed;
+  top: 20px;
+  left: 10px;
+  z-index: 1;
+}
+
+  /* Style each option in the dropdown menu */
+  #colorSelect option {
+    color: rgb(0, 0, 0); /* Default text color */
+}
+
+/* Style each option based on its value */
+#colorSelect option[value="#000000"] { color: #000000; }
+#colorSelect option[value="#ff0000"] { color: #ff0000; }
+#colorSelect option[value="#00ff00"] { color: #00ff00; }
+#colorSelect option[value="#0000ff"] { color: #0000ff; }
+#colorSelect option[value="#ffff00"] { color: #ffff00; }
